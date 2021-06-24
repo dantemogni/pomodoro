@@ -1,26 +1,33 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <MainPomodore/>
+  <Footer/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import MainPomodore from "./components/MainPomodore.vue";
+import Footer from './components/Footer.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    MainPomodore,
+    Footer
   }
 }
 </script>
 
 <style>
 #app {
+  height: 100vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8,1fr);
+  align-items: center;
+  justify-content: center;
+
 }
 </style>
