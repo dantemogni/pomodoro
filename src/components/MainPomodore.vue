@@ -8,7 +8,8 @@
             <span class="p-title">POMODORO TIMER</span>
             <span class="p-clock">25:00</span>
         </div>
-        <button type="button" class="btn btn-primary item-main start-p">Start</button>
+       <!-- Fijarse otra forma de camviar de Start/Pause usando funciones o un watch --> 
+        <button @click="this.isToggle = !this.isToggle" type="button" class="btn btn-primary item-main start-p"><span v-if="!this.isToggle">Start</span><span v-if="this.isToggle">Pause</span></button>
         <button type="button" class="btn btn-outline-secondary item-main add-five" disabled>Add 5'</button>
         <button type="button" class="btn btn-outline-danger item-main stop-p" disabled>Stop</button>
     </div>
@@ -17,6 +18,18 @@
 <script>
 export default {
   name: 'MainPomodore',
+  data(){
+      return {
+          isToggle: false,
+          timerActivate: false,
+          timerStarted: false,
+          timerMinutes: 25,
+      }
+  },
+  computed:{
+  },
+  methods:{
+  }
 }
 </script>
 <style>
@@ -29,8 +42,9 @@ export default {
 }
 .main{
     margin: 0 auto;
-    grid-column: 3 / 7;
-    grid-row: 3 / 7;
+    grid-column: 2 / -2;
+    grid-row: 2 / -2;
+    max-width: 450px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
