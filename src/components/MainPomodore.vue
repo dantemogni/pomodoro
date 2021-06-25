@@ -16,6 +16,7 @@
                 <span>:</span>
                 <span>{{seconds}}</span>
             </div>
+            <span v-if="this.cyclesNum>0" class="p-cycle">SESSION NUMBER {{cyclesNum}}</span>
         </div>
        <!-- Fijarse otra forma de camviar de Start/Pause usando funciones o un watch --> 
        <transition name="fade" mode="out-in">
@@ -72,6 +73,7 @@ export default {
           isTimerBreak: false,
           isSBreak:false,
           isLBreak:false,
+          cyclesNum:0,
           msg:"POMODORO TIMER",
           msgSBreak:"ENJOY YOUR SHORT BREAK :)",
           msgLBreak:"ENJOY YOUR LONG BREAK :) GO OUTSIDE, DRINK SOME WATER",
@@ -80,27 +82,41 @@ export default {
   computed:{
     minutes: function(){
         const minutes = Math.floor(this.remaingTime/60);
-        if(minutes>10) return minutes
+        if(minutes>=10) return minutes
         else return '0' + minutes;
     },
     seconds: function(){
         const seconds = this.remaingTime - (this.minutes*60);
-        if(seconds>10) return seconds
+        if(seconds>=10) return seconds
         else return '0' + seconds;
     }, 
 },
   methods:{
     handleStart: function(){
+        this.remaingTime= 60*25;
+        clearInterval(this.timer);
         this.timer = setInterval(()=>this.decreaseTimer(),1000);
         this.isTimerReset = false;
+        this.msg="TIMER RUNNING";
         this.isTimerStarted=true;
+        this.isTimerPaused= false;
+        this.isTimerBreak=false;
+        this.isSBreak=false;
+        this.isLBreak=false;
     },
     decreaseTimer: function(){
         if(this.remaingTime>=1){
             this.remaingTime--;
         } else{
             this.remaingTime = 0;
-            this.handlePause();
+            this.cyclesNum++;
+            if(this.cyclesNum===4){
+                this.handleLongBreak();
+                this.handleReset();
+            } else{
+                this.handleShortBreak();
+                this.handleStart();
+            }
         }
     },
     handleAdd: function(){
@@ -116,7 +132,7 @@ export default {
         this.handleStart();
         this.isTimerPaused = false;
         if(!this.isTimerBreak){
-            this.msg="POMODORO TIMER";
+            this.msg="TIMER RUNNING";
         } else if(this.isSBreak){
             this.msg=this.msgSBreak;
         } else if(this.isLBreak){
@@ -131,8 +147,9 @@ export default {
         this.isTimerPaused= false;
         this.isTimerBreak=false;
         this.timer=null;
-        this.isSBreak=false,
-        this.isLBreak=false,
+        this.isSBreak=false;
+        this.isLBreak=false;
+        this.cyclesNum = 0;
         this.msg="POMODORO TIMER";
     },
     handleLongBreak: function(){
@@ -141,7 +158,7 @@ export default {
         this.timer = setInterval(()=>this.decreaseTimer(),1000);
         this.isTimerBreak=true;
         this.isLBreak=true;
-        this.isSBreak=false,
+        this.isSBreak=false;
         this.isTimerPaused = false;
         this.msg=this.msgLBreak;
     },
@@ -152,7 +169,7 @@ export default {
         this.timer = setInterval(()=>this.decreaseTimer(),1000);
         this.isTimerBreak=true;
         this.isSBreak=true;
-        this.isLBreak=false,
+        this.isLBreak=false;
         this.msg=this.msgSBreak;
     }
   }
@@ -173,6 +190,9 @@ export default {
 }
 .p-title{
     font-size: 0.7em;
+}
+.p-cycle{
+    font-size: 0.9em;
 }
 .p-clock{
     font-size: 4em;
