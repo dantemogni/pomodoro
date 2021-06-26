@@ -2,6 +2,7 @@
     <audio id="audioStart"><source src="@/assets/start.mp3" type="audio/mpeg"></audio>
     <audio id="audioPause"><source src="@/assets/pause.mp3" type="audio/mpeg"></audio>
     <audio id="audioReset"><source src="@/assets/reset.mp3" type="audio/mpeg"></audio>
+    <audio id="audioNoti"><source src="@/assets/notificationBell.wav" type="audio/wav"></audio>
     <transition appear name="bounce">
         <div class="main shadow" 
             :class="{
@@ -127,6 +128,8 @@ export default {
             this.remaingTime--;
         } else{
             this.remaingTime = 0;
+            var x = document.getElementById("audioNoti"); 
+            x.play();
             callback();
         }
     },
