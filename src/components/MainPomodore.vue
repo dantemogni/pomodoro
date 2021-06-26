@@ -1,14 +1,14 @@
 <template>
+    <audio id="audioStart"><source src="@/assets/start.mp3" type="audio/mpeg"></audio>
+    <audio id="audioPause"><source src="@/assets/pause.mp3" type="audio/mpeg"></audio>
+    <audio id="audioReset"><source src="@/assets/reset.mp3" type="audio/mpeg"></audio>
     <transition appear name="bounce">
         <div class="main shadow" 
             :class="{
                 resume: this.isTimerPaused&&!this.isTimerReset&&!this.isTimerBreak, 
                 pause: !this.isTimerPaused&&!this.isTimerReset&&!this.isTimerBreak,
                 break: this.isTimerBreak&&!this.isTimerReset}">
-        <!-- 
-            Al apretar "Start", se eliminan los atributos 'disabled'
-            Cuando se aprieta "Start", se cambia el nombre del boton a Pausa.    
-         -->
+
         <div id="timerClock">
             <span class="p-title">{{msg}}</span>
             <div class="p-clock">
@@ -17,13 +17,12 @@
                 <span>{{seconds}}</span>
             </div>
             <div id="dotsCycle">
-                <span class="dot" :class="{activeDot: this.cyclesNum>0}"></span>
-                <span class="dot" :class="{activeDot: this.cyclesNum>1}"></span>
-                <span class="dot" :class="{activeDot: this.cyclesNum>2}"></span>
-                <span class="dot" :class="{activeDot: this.cyclesNum>3}"></span>
+                <span class="dot" :class="{activeDot: this.cyclesNum>0, currentDot: this.cyclesNum===1&&!this.isTimerPaused}"></span>
+                <span class="dot" :class="{activeDot: this.cyclesNum>1, currentDot: this.cyclesNum===2&&!this.isTimerPaused}"></span>
+                <span class="dot" :class="{activeDot: this.cyclesNum>2, currentDot: this.cyclesNum===3&&!this.isTimerPaused}"></span>
+                <span class="dot" :class="{activeDot: this.cyclesNum>3, currentDot: this.cyclesNum===4&&!this.isTimerPaused}"></span>
             </div>
         </div>
-       <!-- Fijarse otra forma de camviar de Start/Pause usando funciones o un watch --> 
        <transition name="fade" mode="out-in">
             <button 
                 v-if="this.isTimerReset" 
@@ -71,7 +70,7 @@ export default {
   data(){
       return {
           timer: null,
-          remaingTime: 60*0.1,
+          remaingTime: 60*25,
           isTimerReset: true,
           isTimerStarted: false,
           isTimerPaused: false,
@@ -99,18 +98,14 @@ export default {
   methods:{
 
     handleStart: function(){
-        //SACAR EL REMAINGTIME DE ACA PORQUE AL RETOMAR DE LA PAUSA SE REINICIA
-        /*
-         *
-         * NO FUNCIONA
-         * !!!!
-         * 
-         */
-        if(this.cyclesNum>3){
-            this.runTimer(0.1, this.handleLongBreak);
+        var x = document.getElementById("audioStart"); 
+        x.play();
+        if(this.cyclesNum>2){
+            this.runTimer(25, this.handleLongBreak);
         } else{
-            this.runTimer(0.1, this.handleShortBreak);
+            this.runTimer(25, this.handleShortBreak);
         }
+    
         this.isTimerReset = false;
         this.msg="TIMER RUNNING";
         this.isTimerPaused= false;
@@ -144,12 +139,23 @@ export default {
         clearInterval(this.timer);
         this.isTimerPaused = true;
         this.timer = null;
+        var x = document.getElementById("audioPause"); 
+        x.play();
         this.msg="TIMER PAUSED";
     },
 
     handleResume: function(){
-        this.handleStart();
-        this.cyclesNum--;
+        if(this.isSBreak){
+            this.timer = setInterval(()=>this.decreaseTimer(this.handleStart),1000);
+        } else if(this.isLBreak){
+            this.timer = setInterval(()=>this.decreaseTimer(this.handleReset),1000);
+        } else if(this.cyclesNum>3){
+            this.timer = setInterval(()=>this.decreaseTimer(this.handleLongBreak),1000);
+        } else{
+            this.timer = setInterval(()=>this.decreaseTimer(this.handleShortBreak),1000);
+        }
+        var x = document.getElementById("audioStart"); 
+        x.play();
         this.isTimerPaused = false;
         if(!this.isTimerBreak){
             this.msg="TIMER RUNNING";
@@ -162,6 +168,8 @@ export default {
 
     handleReset: function(){
         clearInterval(this.timer);
+        var x = document.getElementById("audioReset"); 
+        x.play();
         this.remaingTime = 60*25;
         this.isTimerReset = true;
         this.isTimerStarted = false;
@@ -175,7 +183,7 @@ export default {
     },
 
     handleLongBreak: function(){
-        this.runTimer(0.1, this.handleReset);
+        this.runTimer(15, this.handleReset);
         this.isTimerBreak=true;
         this.isLBreak=true;
         this.isSBreak=false;
@@ -184,7 +192,7 @@ export default {
     },
 
     handleShortBreak: function(){
-        this.runTimer(0.1, this.handleStart);
+        this.runTimer(5, this.handleStart);
         this.isTimerPaused = false;
         this.isTimerBreak=true;
         this.isSBreak=true;
@@ -205,7 +213,22 @@ transition: all 0.5s ease-in;
   display: inline-block;
 }
 .activeDot{
-    background-color: rgb(94, 94, 94) !important;
+    background-color: rgb(85, 85, 85) !important;
+}
+.currentDot{
+    animation: currentD 1s ease-in infinite;
+}
+
+@keyframes currentD{
+    0%{
+        opacity: 1;
+    }
+    50%{
+        opacity: 0.3;
+    }
+    100%{
+        opacity: 1;
+    }
 }
 .pause{
     background-color: rgba(0, 255, 34, 0.171) !important;
