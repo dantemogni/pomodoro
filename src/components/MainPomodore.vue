@@ -16,7 +16,12 @@
                 <span>:</span>
                 <span>{{seconds}}</span>
             </div>
-            <span v-if="this.cyclesNum>0" class="p-cycle">SESSION NUMBER {{cyclesNum}}</span>
+            <div id="dotsCycle">
+                <span class="dot" :class="{activeDot: this.cyclesNum>0}"></span>
+                <span class="dot" :class="{activeDot: this.cyclesNum>1}"></span>
+                <span class="dot" :class="{activeDot: this.cyclesNum>2}"></span>
+                <span class="dot" :class="{activeDot: this.cyclesNum>3}"></span>
+            </div>
         </div>
        <!-- Fijarse otra forma de camviar de Start/Pause usando funciones o un watch --> 
        <transition name="fade" mode="out-in">
@@ -66,7 +71,7 @@ export default {
   data(){
       return {
           timer: null,
-          remaingTime: 60*25,
+          remaingTime: 60*0.1,
           isTimerReset: true,
           isTimerStarted: false,
           isTimerPaused: false,
@@ -92,44 +97,59 @@ export default {
     }, 
 },
   methods:{
+
     handleStart: function(){
-        this.remaingTime= 60*25;
-        clearInterval(this.timer);
-        this.timer = setInterval(()=>this.decreaseTimer(),1000);
+        //SACAR EL REMAINGTIME DE ACA PORQUE AL RETOMAR DE LA PAUSA SE REINICIA
+        /*
+         *
+         * NO FUNCIONA
+         * !!!!
+         * 
+         */
+        if(this.cyclesNum>3){
+            this.runTimer(0.1, this.handleLongBreak);
+        } else{
+            this.runTimer(0.1, this.handleShortBreak);
+        }
         this.isTimerReset = false;
         this.msg="TIMER RUNNING";
-        this.isTimerStarted=true;
         this.isTimerPaused= false;
         this.isTimerBreak=false;
         this.isSBreak=false;
         this.isLBreak=false;
+        this.isTimerStarted=true;
+        this.cyclesNum++;
     },
-    decreaseTimer: function(){
+
+    runTimer:function(minutes, callback){
+        this.remaingTime= 60*minutes;
+        clearInterval(this.timer);
+        this.timer = setInterval(()=>this.decreaseTimer(callback),1000);
+    },
+    
+    decreaseTimer: function(callback){
         if(this.remaingTime>=1){
             this.remaingTime--;
         } else{
             this.remaingTime = 0;
-            this.cyclesNum++;
-            if(this.cyclesNum===4){
-                this.handleLongBreak();
-                this.handleReset();
-            } else{
-                this.handleShortBreak();
-                this.handleStart();
-            }
+            callback();
         }
     },
+    
     handleAdd: function(){
         this.remaingTime+=60*5;
     },
+
     handlePause: function(){
         clearInterval(this.timer);
         this.isTimerPaused = true;
         this.timer = null;
         this.msg="TIMER PAUSED";
     },
+
     handleResume: function(){
         this.handleStart();
+        this.cyclesNum--;
         this.isTimerPaused = false;
         if(!this.isTimerBreak){
             this.msg="TIMER RUNNING";
@@ -139,6 +159,7 @@ export default {
             this.msg=this.msgLBreak;
         }
     },
+
     handleReset: function(){
         clearInterval(this.timer);
         this.remaingTime = 60*25;
@@ -152,21 +173,19 @@ export default {
         this.cyclesNum = 0;
         this.msg="POMODORO TIMER";
     },
+
     handleLongBreak: function(){
-        clearInterval(this.timer);
-        this.remaingTime=60*15;
-        this.timer = setInterval(()=>this.decreaseTimer(),1000);
+        this.runTimer(0.1, this.handleReset);
         this.isTimerBreak=true;
         this.isLBreak=true;
         this.isSBreak=false;
         this.isTimerPaused = false;
         this.msg=this.msgLBreak;
     },
+
     handleShortBreak: function(){
-        clearInterval(this.timer);
+        this.runTimer(0.1, this.handleStart);
         this.isTimerPaused = false;
-        this.remaingTime=60*5;
-        this.timer = setInterval(()=>this.decreaseTimer(),1000);
         this.isTimerBreak=true;
         this.isSBreak=true;
         this.isLBreak=false;
@@ -176,6 +195,18 @@ export default {
 }
 </script>
 <style>
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: rgb(175, 175, 175);
+  border-radius: 50%;
+  margin: 5px;
+transition: all 0.5s ease-in;
+  display: inline-block;
+}
+.activeDot{
+    background-color: rgb(94, 94, 94) !important;
+}
 .pause{
     background-color: rgba(0, 255, 34, 0.171) !important;
     transition: all 0.5s ease-in;
