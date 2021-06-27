@@ -11,13 +11,19 @@ export default {
     Footer
   }
 }
+// We listen to the resize event
+window.addEventListener('resize', () => {
+  // We execute the same script as before
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
 </script>
 
 <style>
 #app {
-  height: 100%;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+    height:100vh;
+  height: calc(var(--vh, 1vh) * 100);
+    -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
