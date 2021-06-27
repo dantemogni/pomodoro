@@ -149,6 +149,9 @@ export default {
     handleStart: function(){
         var x = document.getElementById("audioStart"); 
         x.play();
+        if(this.minutesConfig<0){
+            this.minutesConfig = 0;
+        }
         if(this.cyclesNum>2){
             this.runTimer(this.minutesConfig, this.handleLongBreak);
         } else{
@@ -234,6 +237,9 @@ export default {
     },
 
     handleLongBreak: function(){
+        if(this.longBreakConfig<0){
+            this.longBreakConfig = 0;
+        }
         this.runTimer(this.longBreakConfig, this.handleReset);
         this.isTimerBreak=true;
         this.isLBreak=true;
@@ -243,6 +249,9 @@ export default {
     },
 
     handleShortBreak: function(){
+        if(this.shortBreakConfig<0){
+            this.shortBreakConfig = 0;
+        }
         this.runTimer(this.shortBreakConfig, this.handleStart);
         this.isTimerPaused = false;
         this.isTimerBreak=true;
