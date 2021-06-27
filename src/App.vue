@@ -1,15 +1,13 @@
 <template>
-  <MainPomodore/>
+    <router-view></router-view>
   <Footer/>
 </template>
 
 <script>
-import MainPomodore from "./components/MainPomodore.vue";
 import Footer from './components/Footer.vue'
 export default {
   name: 'App',
   components: {
-    MainPomodore,
     Footer
   }
 }
