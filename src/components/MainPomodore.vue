@@ -24,7 +24,7 @@
                 <span>{{seconds}}</span>
             </div>
             <div id="dotsCycle">
-                <span v-for="dot in sessionConfig" 
+                <span v-for="dot in this.sessionConfig" 
                     :key="dot" class="dot" 
                     :class="{activeDot: this.cyclesNum>=dot, currentDot: this.cyclesNum===dot&&!this.isTimerPaused}"></span>
                
@@ -84,13 +84,13 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Short Minutes</span>
             </div>
-        <input v-model="shortBreakConfig" type="number" id="sessionInput" class="form-control" placeholder="Default: 4" aria-label="sessions" aria-describedby="basic-addon2">
+        <input v-model="shortBreakConfig" type="number" id="sessionInput" class="form-control" placeholder="Default: 5" aria-label="sessions" aria-describedby="basic-addon2">
         </div>
             <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Long Minutes</span>
             </div>
-        <input v-model="longBreakConfig" type="number" id="sessionInput" class="form-control" placeholder="Default: 4" aria-label="sessions" aria-describedby="basic-addon2">
+        <input v-model="longBreakConfig" type="number" id="sessionInput" class="form-control" placeholder="Default: 15" aria-label="sessions" aria-describedby="basic-addon2">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
