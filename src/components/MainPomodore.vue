@@ -3,7 +3,7 @@
     <audio id="audioPause"><source src="@/assets/pause.mp3" type="audio/mpeg"></audio>
     <audio id="audioReset"><source src="@/assets/reset.mp3" type="audio/mpeg"></audio>
     <audio id="audioNoti"><source src="@/assets/notificationBell.wav" type="audio/wav"></audio>
-    <transition name="bounce" appear mode="out-in">
+    <transition name="bounce" appear mode="out-in">        
         <div class="main shadow" 
             :class="{
                 resume: this.isTimerPaused&&!this.isTimerReset&&!this.isTimerBreak, 

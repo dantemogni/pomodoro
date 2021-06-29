@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'MainPomodore',
+  name: 'Footer',
   data(){
       return{
         author: "Dante Mogni",
