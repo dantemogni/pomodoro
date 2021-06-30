@@ -3,9 +3,11 @@ import Pomodoro  from '../views/Pomodoro/Pomodoro'
 
 const routes = [
   {
-    path: '/:type',
+    /**Hacer otras vistas dependiendo el work, break, long break?
+     * esto reutilizando los botones(haciendolos componentes) */ 
+    path: '/',
     name: 'Pomodoro',
-    component: Pomodoro
+    component: Pomodoro,
   },
   {
     path: '/settings',

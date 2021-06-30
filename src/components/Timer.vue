@@ -31,10 +31,15 @@ export default {
         isBreak:{
             type: Boolean,
             default: false,
+        },
+        sessionsComplete:{
+            type: Number,
+            default:0,
         }
     }, 
     data(){
         return{
+            finishedCycles: 0,
             remaingTime: 25,
             countdown: null,
         }
@@ -51,52 +56,63 @@ export default {
             const seconds = Math.floor(this.remaingTime % 60);
             return this.getFormattedTime(seconds);
         }, 
+        getFinishedSessions(){
+            return this.finishedCycles;
+        }
     },
     methods:{
         setTime(value){
             this.remaingTime = value * 60;
         },
         handleStart(){
-            this.countdown = window.setInterval(() => this.decreaseTimer(), 1000);
+            this.finishedCycles++;
+            this.startCoutdown();
         },
         handlePause(){
-            if(this.isPaused){
-                this.stopCountdown();
-            } else{
-                this.handleStart();
+            this.isPaused ? this.stopCountdown() : this.startCoutdown();
+        },
+        startCoutdown(){
+            /**
+             * Starts the interval, decreasing the timer by one second
+             */
+            this.countdown = window.setInterval(() => this.remaingTime--, 1000);
+        },
+        decreaseTimer(){
+            this.remaingTime--;
+            if(this.remaingTime===-1){
+                return;
             }
         },
         stopCountdown(){
+            /**
+             * Stops the on-going interval and sets the coutdown to null
+             */
             clearInterval(this.countdown);
             this.countdown = null;
         },
         handleReset(){
+            /**
+             * Resets timer
+             */
             this.stopCountdown();
             this.setTime(this.$props.time);
         },
         addMinutes(value){
+            /**
+             * Adds the param value to the on-going timer
+             */
             this.remaingTime+=60*value;
         },
-        decreaseTimer: function(){
-            if(this.remaingTime>=1){
-                this.remaingTime--;
-            } else{
-                this.remaingTime = 0;
-                return;
-            }
-        },
-        getFormattedTime(value){
-            /**
-             * Adds a '0' at front when value<10
-             */
-            return value.toString().padStart(2,'0'); 
-        }
+        /**
+         * Adds a '0' at front when value<10
+         */
+        getFormattedTime: (value) => value.toString().padStart(2,'0'), 
     },
     watch:{
         time(newTime){
             /**
              * Watches if the time has changed (if it changed from work to break)
-             */
+             */            
             this.setTime(newTime);
         },
         isPaused(){
@@ -115,9 +131,18 @@ export default {
         },
         isStarted(newValue){
              if(newValue){
+                this.stopCountdown()
                 this.handleStart();
             }
-        }
+        },
+        remaingTime(newValue){
+            if(newValue===-1){
+                this.$emit('triggerNewType', this.isBreak);
+            }
+        },
+        finishedCycles(){
+            this.$emit('newSession');
+        },
     }
   }
 </script>
