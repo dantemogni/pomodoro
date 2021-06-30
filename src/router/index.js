@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Pomodoro  from '../views/Pomodoro/Pomodoro'
+import Pomodoro  from '../views/Pomodoro'
 
 const routes = [
   {

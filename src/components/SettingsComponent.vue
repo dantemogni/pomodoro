@@ -1,20 +1,21 @@
 <template>
+    <keep-alive>
     <section class="settings">
     <div class="input-group  mb-3">
-        <label for="rangeMinutes" class="form-label">Work Minutes: {{this.valueMinutes}}</label>
-        <input v-model="valueMinutes" type="range" min="1" max="100" class="form-range" id="rangeMinutes">
+        <label for="rangeMinutes" class="form-label">Work Minutes: {{this.info.valueMinutes}}</label>
+        <input v-model="info.valueMinutes" type="range" min="1" max="100" class="form-range" id="rangeMinutes">
     </div>
     <div class="input-group mb-3">
-        <label for="rangeSessions" class="form-label">Sessions: {{this.valueSessions}}</label>
-        <input v-model="valueSessions" type="range" min="1" max="100" class="form-range" id="rangeSessions">
+        <label for="rangeSessions" class="form-label">Sessions: {{this.info.valueSessions}}</label>
+        <input v-model="info.valueSessions" type="range" min="1" max="100" class="form-range" id="rangeSessions">
     </div>
     <div class="input-group mb-3">
-        <label for="rangeShortBreak" class="form-label">Short Break minutes: {{this.valueShortBreak}}</label>
-        <input v-model="valueShortBreak" type="range" min="1" max="100" class="form-range" id="rangeShortBreak">
+        <label for="rangeShortBreak" class="form-label">Short Break minutes: {{this.info.valueShortBreak}}</label>
+        <input v-model="info.valueShortBreak" type="range" min="1" max="100" class="form-range" id="rangeShortBreak">
     </div>
         <div class="input-group mb-3">
-        <label for="rangeLongBreak" class="form-label">Long Break minutes: {{this.valueLongBreak}}</label>
-        <input v-model="valueLongBreak" type="range" min="1" max="100" class="form-range" id="rangeLongBreak">
+        <label for="rangeLongBreak" class="form-label">Long Break minutes: {{this.info.valueLongBreak}}</label>
+        <input v-model="info.valueLongBreak" type="range" min="1" max="100" class="form-range" id="rangeLongBreak">
     </div>
     <div class="buttons">
         <button 
@@ -32,6 +33,8 @@
             :disabled="!this.hasChanged">Set Default</button>
         </div>
     </section>
+    </keep-alive>
+
 </template>
 <style>
 .settings{
@@ -47,25 +50,26 @@ export default {
      */
     data(){
         return{
-            valueMinutes: 25,
-            valueSessions:4,
-            valueShortBreak:5,
-            valueLongBreak:15,
-            isConfigChanged:false,
+            info:{
+                valueMinutes: 25,
+                valueSessions:4,
+                valueShortBreak:5,
+                valueLongBreak:15,
+            },
         }
     },
     computed:{
         isMinDefault(){
-            return this.valueMinutes===25;
+            return this.info.valueMinutes===25;
         },
         isMinShortBreakDefault(){
-            return this.valueShortBreak===5;
+            return this.info.valueShortBreak===5;
         },
         isMinLongBreakDefaut(){
-            return this.valueLongBreak===15;
+            return this.info.valueLongBreak===15;
         },
         isSessionsDefault(){
-            return this.valueSessions===4;
+            return this.info.valueSessions===4;
         },
         hasChanged(){
             /**
@@ -82,16 +86,16 @@ export default {
             const arry = [];
 
             if(!this.isMinDefault){
-                arry.push({min: this.valueMinutes});
+                arry.push({min: this.info.valueMinutes});
             }
             if(!this.isMinShortBreakDefault){
-                arry.push({sbr: this.valueShortBreak});
+                arry.push({sbr: this.info.valueShortBreak});
             }
             if(!this.isMinLongBreakDefaut){
-                arry.push({lbr: this.valueLongBreak});
+                arry.push({lbr: this.info.valueLongBreak});
             }
             if(!this.isSessionsDefault){
-                arry.push({ses: this.valueSessions});
+                arry.push({ses: this.info.valueSessions});
             }
             
             return arry;
@@ -119,11 +123,10 @@ export default {
             this.updateRoute(routeConfig);
         },
         resetValues(){
-            this.valueMinutes = 25;
-            this.valueSessions = 4;
-            this.valueShortBreak = 5;
-            this.valueLongBreak = 15;
-            this.isConfigChanged = false;
+            this.info.valueMinutes = 25;
+            this.info.valueSessions = 4;
+            this.info.valueShortBreak = 5;
+            this.info.valueLongBreak = 15;
         },
         clickBack(){
             /**

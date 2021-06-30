@@ -5,88 +5,62 @@
   <audio id="audioReset"><source src="@/assets/reset.mp3" type="audio/mpeg"></audio>
   <!--<audio id="audioNoti"><source src="@/assets/notificationBell.wav" type="audio/wav"></audio>-->
 
-  <div class="top-buttons">
-    <transition name="scale" mode="out-in">
-      <button
-          v-if="!isTimerStarted"
-          @click="clickStart" 
-          type="button" 
-          class="main-btn shadow item-main">
-            <i class="fas fa-plus"></i>
-      </button>
+  <!-- START/PASUE/RESUME BUTTONS -->
+  <ControlButtons 
+    :isPaused="isTimerPaused"
+    :isStarted="isTimerStarted" 
+    @start="clickStart" 
+    @pause="togglePause"/>
 
-      <button 
-          v-else-if="isTimerStarted" 
-          @click="togglePause" 
-          type="button" 
-          class="main-btn item-main"
-          :class="{'pause-btn':!isTimerPaused, 'resume-btn':isTimerPaused}">
-            <i class="fas" 
-              :class="{'fa-pause': !isTimerPaused, 
-                      'fa-play': isTimerPaused }"
-            />
-      </button>
-    </transition>
-  </div>
+  <!-- POMODORO TIMER -->
+  <Timer 
+    :time="getPomodoroTime" 
+    :isPaused="isTimerPaused"
+    :isStarted="isTimerStarted"
+    :isBreak="isTimerOnBreak"
+    :addMin="getAddedMinutes"
+    :isReset="!isTimerStarted"
+    :sessionsComplete="getUpdatedSessions"
+    @triggerNewType="changeType"/>
 
-    <!-- TIMER -->
-    <Timer 
-      :time="getPomodoroTime" 
-      :isPaused="isTimerPaused"
-      :isStarted="isTimerStarted"
-      :isBreak="isTimerOnBreak"
-      :addMin="getAddedMinutes"
-      :isReset="!isTimerStarted"
-      :sessionsComplete="getUpdatedSessions"
-      @triggerNewType="changeType"/>
-    <!-- END TIMER -->
-
-    <!-- BUTTONS -->
+  <!-- SESSIONS INDICATOR -->
   <DotSessions 
     :sessions="getSessions"
     :finishedSessions="getUpdatedSessions"
     :isPaused="isTimerPaused"/>
 
-    <button 
-        @click="clickBreak" 
-        type="button" 
-        class="btn btn-outline-primary item-main break-btn"
-        :disabled="!this.isTimerStarted">Break</button>
-    <button 
-        @click="clickLongBreak" 
-        type="button" 
-        class="btn btn-outline-primary item-main break-btn"
-        :disabled="!this.isTimerStarted">Long Break</button>
+  <!-- BREAK BUTTONS -->
+  <ForceBreakButtons
+    :isStarted="isTimerStarted"
+    @short="clickBreak"
+    @long="clickLongBreak"/>
     
-    <button 
-        @click="clickAdd" 
-        type="button" 
-        class="btn btn-outline-secondary item-main add-btn"
-        :disabled="!this.isTimerStarted">Add 3'</button>
-    
-    <!-- prueba de $emits en un boton -->
-    <ResetButton :disabled="!this.isTimerStarted" @click="clickReset()">Reset</ResetButton>
-    
-    <button 
-        @click="clickSettings"
-        type="button" 
-        class="settings-btn shadow item-main"><i class="fas fa-cog"></i></button>    
-    <!-- END BUTTONS -->
+  <AddMinutesButton :isStarted="isTimerStarted" @click="clickAdd"> Add 3' </AddMinutesButton>
+  <ResetButton :disabled="!this.isTimerStarted" @click="clickReset"> Reset </ResetButton>
+  <SettingsButton @click="clickSettings"><i class="fas fa-cog"></i></SettingsButton>    
 
 </template>
 
 <script>
 
-import Timer from '@/components/Timer.vue'
-import DotSessions from '@/components/DotsSessions.vue'
-import ResetButton from "@/components/ResetButton.vue";
+import Timer from '@/components/Pomodoro-Main/Timer.vue'
+import DotSessions from '@/components/Pomodoro-Main/DotsSessions.vue'
+import ControlButtons from '@/components/Pomodoro-Main/ControlButtons.vue'
+import ForceBreakButtons from '@/components/Pomodoro-Main/ForceBreakButtons.vue'
+import AddMinutesButton from '@/components/Pomodoro-Main/AddMinutesButton.vue'
+import ResetButton from "@/components/Pomodoro-Main/ResetButton.vue"
+import SettingsButton from "@/components/Pomodoro-Main/SettingsButton.vue"
 
 export default {
   name: 'Pomodoro',
   components: {
     Timer,
     DotSessions,
+    ControlButtons,
+    ForceBreakButtons,
+    AddMinutesButton,
     ResetButton,
+    SettingsButton,
   },
   data(){
     return{
@@ -110,13 +84,13 @@ export default {
        */
       switch(this.timer){
         case this.info.WORK:
-          return (typeof this.$route.query.min === 'undefined') ? 0.1 : parseInt(this.$route.query.min);
+          return (typeof this.$route.query.min === 'undefined') ? this.info.WORK : parseInt(this.$route.query.min);
         case this.info.BREAK:
-         return (typeof this.$route.query.sbr === 'undefined') ? 0.2 : parseInt(this.$route.query.sbr);
+         return (typeof this.$route.query.sbr === 'undefined') ? this.info.BREAK : parseInt(this.$route.query.sbr);
         case this.info.LONG_BREAK:
-          return (typeof this.$route.query.lbr === 'undefined') ? 0.3 : parseInt(this.$route.query.lbr);
+          return (typeof this.$route.query.lbr === 'undefined') ? this.info.LONG_BREAK : parseInt(this.$route.query.lbr);
         default:
-          return (typeof this.$route.query.min === 'undefined') ? 25 : parseInt(this.$route.query.min);
+          return (typeof this.$route.query.min === 'undefined') ? this.info.WORK : parseInt(this.$route.query.min);
       }
     },
     isTimerStarted(){

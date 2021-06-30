@@ -58,7 +58,7 @@ export default {
         }, 
         getFinishedSessions(){
             return this.finishedCycles;
-        }
+        },
     },
     methods:{
         setTime(value){
@@ -69,7 +69,7 @@ export default {
             this.startCoutdown();
         },
         handlePause(){
-            this.isPaused ? this.stopCountdown() : this.startCoutdown();
+            this.isPaused ? (this.stopCountdown(),document.title=+this.minutes+':'+this.seconds+' - Paused'): this.startCoutdown();
         },
         startCoutdown(){
             /**
@@ -103,10 +103,22 @@ export default {
              */
             this.remaingTime+=60*value;
         },
-        /**
-         * Adds a '0' at front when value<10
-         */
+            /** getFormattedTime:
+             * Adds a '0' at front when value<10
+             */
         getFormattedTime: (value) => value.toString().padStart(2,'0'), 
+        changeDocumentTitle(){
+            /**
+             * Changes DOM document.title to display the current countdown
+             */
+            if(this.isStarted && !this.isBreak){
+                document.title=this.minutes+':'+this.seconds+' - Pomodoro'
+            } else if(this.isStarted && this.isBreak){
+                document.title=this.minutes+':'+this.seconds+' - Break'
+            } else{
+                document.title='Pomodoro';
+            }
+        }
     },
     watch:{
         time(newTime){
@@ -136,6 +148,8 @@ export default {
             }
         },
         remaingTime(newValue){
+            this.changeDocumentTitle();
+
             if(newValue===-1){
                 this.$emit('triggerNewType', this.isBreak);
             }
