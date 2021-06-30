@@ -9,23 +9,5 @@ export default {
   components: {
     SettingsComponent
   },
-  // props:{
-  //   numberOfSessions:{
-  //     type: Number,
-  //     default: 4,
-  //   },
-  //   workMinutes:{
-  //     type: Number,
-  //     default: 25
-  //   },
-  //   breakMinutes:{
-  //     type: Number,
-  //     default: 5
-  //   },
-  //   longBreakMinutes:{
-  //     type: Number,
-  //     default: 15
-  //   }
-  // }
 }
 </script>

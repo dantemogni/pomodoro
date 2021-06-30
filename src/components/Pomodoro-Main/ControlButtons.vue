@@ -37,7 +37,8 @@ export default ({
             type:Boolean,
             default: false,
         }
-    }
+    },
+    emits: ['start', 'pause']
 })
 
 </script>

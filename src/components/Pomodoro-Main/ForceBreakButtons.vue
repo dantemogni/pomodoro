@@ -20,6 +20,7 @@ export default ({
             type:Boolean,
             default: false,
         }
-    }
+    },
+    emits:['short', 'long']
 })
 </script>

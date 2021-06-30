@@ -37,6 +37,7 @@ export default {
             default:0,
         }
     }, 
+    emits:['triggerNewType', 'newSession'],
     data(){
         return{
             finishedCycles: 0,

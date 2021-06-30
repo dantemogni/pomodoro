@@ -1,40 +1,37 @@
 <template>
-    <keep-alive>
     <section class="settings">
-    <div class="input-group  mb-3">
-        <label for="rangeMinutes" class="form-label">Work Minutes: {{this.info.valueMinutes}}</label>
-        <input v-model="info.valueMinutes" type="range" min="1" max="100" class="form-range" id="rangeMinutes">
-    </div>
-    <div class="input-group mb-3">
-        <label for="rangeSessions" class="form-label">Sessions: {{this.info.valueSessions}}</label>
-        <input v-model="info.valueSessions" type="range" min="1" max="100" class="form-range" id="rangeSessions">
-    </div>
-    <div class="input-group mb-3">
-        <label for="rangeShortBreak" class="form-label">Short Break minutes: {{this.info.valueShortBreak}}</label>
-        <input v-model="info.valueShortBreak" type="range" min="1" max="100" class="form-range" id="rangeShortBreak">
-    </div>
-        <div class="input-group mb-3">
-        <label for="rangeLongBreak" class="form-label">Long Break minutes: {{this.info.valueLongBreak}}</label>
-        <input v-model="info.valueLongBreak" type="range" min="1" max="100" class="form-range" id="rangeLongBreak">
-    </div>
-    <div class="buttons">
-        <button 
-            @click="clickBack"
-            type="button" 
-            class="settings-btn shadow item-main"><i class="fas fa-arrow-left"></i></button>
-        <button 
-            @click="clickBackAndSave"
-            type="button" 
-            class="btn btn-outline-secondary  shadow item-main">Apply</button>
-            <button 
-            @click="resetValues"
-            type="button" 
-            class="btn btn-outline-secondary  shadow item-main"
-            :disabled="!this.hasChanged">Set Default</button>
+        <div class="input-group  mb-3">
+            <label for="rangeMinutes" class="form-label">Work Minutes: {{this.info.valueMinutes}}</label>
+            <input v-model="info.valueMinutes" type="range" min="1" max="100" class="form-range" id="rangeMinutes">
         </div>
+        <div class="input-group mb-3">
+            <label for="rangeSessions" class="form-label">Sessions: {{this.info.valueSessions}}</label>
+            <input v-model="info.valueSessions" type="range" min="1" max="100" class="form-range" id="rangeSessions">
+        </div>
+        <div class="input-group mb-3">
+            <label for="rangeShortBreak" class="form-label">Short Break minutes: {{this.info.valueShortBreak}}</label>
+            <input v-model="info.valueShortBreak" type="range" min="1" max="100" class="form-range" id="rangeShortBreak">
+        </div>
+            <div class="input-group mb-3">
+            <label for="rangeLongBreak" class="form-label">Long Break minutes: {{this.info.valueLongBreak}}</label>
+            <input v-model="info.valueLongBreak" type="range" min="1" max="100" class="form-range" id="rangeLongBreak">
+        </div>
+        <div class="buttons">
+            <!-- <button 
+                @click="clickBack"
+                type="button" 
+                class="settings-btn shadow item-main"><i class="fas fa-arrow-left"></i></button> -->
+            <button 
+                @click="clickBackAndSave"
+                type="button" 
+                class="btn btn-outline-secondary  shadow item-main">Apply</button>
+                <button 
+                @click="resetValues"
+                type="button" 
+                class="btn btn-outline-secondary  shadow item-main"
+                :disabled="!this.hasChanged">Set Default</button>
+            </div>
     </section>
-    </keep-alive>
-
 </template>
 <style>
 .settings{
@@ -140,6 +137,6 @@ export default {
 <style>
 .buttons{
     display:flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 </style>

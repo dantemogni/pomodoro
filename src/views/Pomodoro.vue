@@ -5,39 +5,58 @@
   <audio id="audioReset"><source src="@/assets/reset.mp3" type="audio/mpeg"></audio>
   <!--<audio id="audioNoti"><source src="@/assets/notificationBell.wav" type="audio/wav"></audio>-->
 
-  <!-- START/PASUE/RESUME BUTTONS -->
-  <ControlButtons 
-    :isPaused="isTimerPaused"
-    :isStarted="isTimerStarted" 
-    @start="clickStart" 
-    @pause="togglePause"/>
+  <!-- POMODORO -->
+  <transition
+      appear
+      enter-active-class="animate__animated animate__bounceInDown"
+      leave-active-class="animate__animated animate__bounceOutDown"
+      mode="out-in">
+      <keep-alive>
+        <section v-if="this.view==='Pomodoro'" class="pomodoroContent">
+          <!-- START/PAUSE/RESUME BUTTONS -->
+          <ControlButtons 
+            :isPaused="isTimerPaused"
+            :isStarted="isTimerStarted" 
+            @start="clickStart" 
+            @pause="togglePause"/>
 
-  <!-- POMODORO TIMER -->
-  <Timer 
-    :time="getPomodoroTime" 
-    :isPaused="isTimerPaused"
-    :isStarted="isTimerStarted"
-    :isBreak="isTimerOnBreak"
-    :addMin="getAddedMinutes"
-    :isReset="!isTimerStarted"
-    :sessionsComplete="getUpdatedSessions"
-    @triggerNewType="changeType"/>
+          <!-- POMODORO TIMER -->
+          <Timer 
+            :time="getPomodoroTime" 
+            :isPaused="isTimerPaused"
+            :isStarted="isTimerStarted"
+            :isBreak="isTimerOnBreak"
+            :addMin="getAddedMinutes"
+            :isReset="!isTimerStarted"
+            :sessionsComplete="getUpdatedSessions"
+            @triggerNewType="changeType"/>
 
-  <!-- SESSIONS INDICATOR -->
-  <DotSessions 
-    :sessions="getSessions"
-    :finishedSessions="getUpdatedSessions"
-    :isPaused="isTimerPaused"/>
+          <!-- SESSIONS INDICATOR -->
+          <DotSessions 
+            :sessions="getSessions"
+            :finishedSessions="getUpdatedSessions"
+            :isPaused="isTimerPaused"/>
 
-  <!-- BREAK BUTTONS -->
-  <ForceBreakButtons
-    :isStarted="isTimerStarted"
-    @short="clickBreak"
-    @long="clickLongBreak"/>
-    
-  <AddMinutesButton :isStarted="isTimerStarted" @click="clickAdd"> Add 3' </AddMinutesButton>
-  <ResetButton :disabled="!this.isTimerStarted" @click="clickReset"> Reset </ResetButton>
-  <SettingsButton @click="clickSettings"><i class="fas fa-cog"></i></SettingsButton>    
+          <!-- BREAK BUTTONS -->
+          <ForceBreakButtons
+            :isStarted="isTimerStarted"
+            @short="clickBreak"
+            @long="clickLongBreak"/>
+          
+          <AddMinutesButton :isStarted="isTimerStarted" @click="clickAdd"> Add 3' </AddMinutesButton>
+          <ResetButton :disabled="!this.isTimerStarted" @click="clickReset"> Reset </ResetButton>
+        </section>
+        <Settings v-else-if="this.view==='Settings'"></Settings>
+    </keep-alive>
+  </transition>
+
+  <SettingsButton v-if="this.view==='Pomodoro'" @toggle="toggleViews"><i class="fas fa-cog"></i></SettingsButton>
+  <button 
+    v-else-if="this.view==='Settings'"
+    @click="toggleViews"
+    type="button" 
+    class="settings-btn shadow item-main"><i class="fas fa-arrow-left"></i></button>
+
 
 </template>
 
@@ -49,6 +68,7 @@ import ControlButtons from '@/components/Pomodoro-Main/ControlButtons.vue'
 import ForceBreakButtons from '@/components/Pomodoro-Main/ForceBreakButtons.vue'
 import AddMinutesButton from '@/components/Pomodoro-Main/AddMinutesButton.vue'
 import ResetButton from "@/components/Pomodoro-Main/ResetButton.vue"
+import Settings from '@/components/SettingsComponent.vue'
 import SettingsButton from "@/components/Pomodoro-Main/SettingsButton.vue"
 
 export default {
@@ -59,9 +79,11 @@ export default {
     ControlButtons,
     ForceBreakButtons,
     AddMinutesButton,
-    ResetButton,
+    Settings,
     SettingsButton,
+    ResetButton,
   },
+  emits:['allThingsMounted'],
   data(){
     return{
       isPaused: false,
@@ -69,6 +91,7 @@ export default {
       isBreak: false,
       finishedCycles:0,
       timer: null,
+      view: "Pomodoro",
       info:{
         WORK: 25,
         BREAK: 5,
@@ -113,6 +136,9 @@ export default {
     }
   },
   methods:{
+        toggleViews(){
+      this.view==='Pomodoro' ? this.view='Settings' : this.view='Pomodoro'
+    },
     changeType(value){
       /**
        * Changes the timer type (work, short break, long break)
