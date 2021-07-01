@@ -2,7 +2,7 @@
     <button 
         @click="this.$emit('click')" 
         type="button" 
-        class="btn btn-danger item-main reset-btn"
+        class="btn btn-danger item-main reset-btn btn-block"
         >
         <slot/>
     </button>

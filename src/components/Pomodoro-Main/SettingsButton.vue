@@ -2,7 +2,7 @@
     <button 
         @click="this.$emit('toggle')" 
         type="button" 
-        class="settings-btn shadow item-main"
+        class="btn btn-settings btn-outline-secondary btn-sm btn-block"
         >
         <slot/>
     </button>

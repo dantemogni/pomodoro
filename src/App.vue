@@ -1,5 +1,5 @@
 <template>
-  <section class="main shadow">
+  <section class="main">
     <router-view></router-view>
   </section>
   <Footer/>
@@ -10,20 +10,9 @@ import Footer from './components/Footer.vue'
 
 export default {
   name: 'App',
-  data(){
-    return{
-      view: 'Pomodoro',
-      isMounted: false,
-    }
-  },
   components: {
     Footer,
   },
-  methods:{
-    toggleViews(){
-      this.view==='Pomodoro' ? this.view='Settings' : this.view='Pomodoro'
-    },
-  }
 }
 
 /**
@@ -42,16 +31,6 @@ export default {
 </script>
 
 <style>
-/* .settings{
-  text-align: left;
-  position: absolute;
-  right: 0;
-  padding: 50px;
-  background: white;
-  border: 1px lightgrey solid;
-  height: 100vh;
-  z-index: 99;
-} */
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.3s ease-out;
@@ -86,26 +65,26 @@ export default {
     margin: 0 auto;
     grid-column: 2 / -2;
     grid-row: 2 / -2;
-    max-width: 450px;
+    max-width: 400px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    gap: 10px 20px;
     align-items: center;
-    gap: 8px 15px;
+    align-items: stretch;
+}
+.pomodoroContent{
     border-radius: 15px;
     padding: 30px;
     border: 1px solid #e0e0e0;
     background-color: #fff;
 }
-.pomodoroContent{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px 15px;
-}
 .top-buttons{
   flex: 1 1 100%;
-  padding-bottom:20px;
+  margin-top: -20%;
+}
+.btn-settings{
+  flex: 1 1 100%;
 }
 .add-btn, .break-btn{
     flex: 1 3 30%;
@@ -135,10 +114,11 @@ export default {
   color:white;
   border: none;
   border-radius: 50%;
-  background-color:grey!important;
+  background-color:#6c757d !important;
   width:55px;
   font-size: 1em;
   height:55px;
+  margin-top: 10px;
 }
 .main-btn{
   text-align: center;
@@ -188,5 +168,9 @@ transition: all 0.5s ease-in;
     100%{
         opacity: 1;
     }
+}
+.break{
+    background-color: rgb(189, 255, 249) !important;
+    transition: all 0.5s ease-in;
 }
 </style>

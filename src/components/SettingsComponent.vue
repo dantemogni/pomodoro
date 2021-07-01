@@ -1,5 +1,5 @@
 <template>
-    <section class="settings">
+    <section class="pomodoroContent  main shadow">
         <div class="input-group  mb-3">
             <label for="rangeMinutes" class="form-label">Work Minutes: {{this.info.valueMinutes}}</label>
             <input v-model="info.valueMinutes" type="range" min="1" max="100" class="form-range" id="rangeMinutes">
@@ -24,13 +24,13 @@
             <button 
                 @click="clickBackAndSave"
                 type="button" 
-                class="btn btn-outline-secondary  shadow item-main">Apply</button>
-                <button 
+                class="btn btn-secondary  shadow item-main">Apply</button>
+            <button 
                 @click="resetValues"
                 type="button" 
                 class="btn btn-outline-secondary  shadow item-main"
                 :disabled="!this.hasChanged">Set Default</button>
-            </div>
+        </div>
     </section>
 </template>
 <style>
@@ -41,10 +41,8 @@
 </style>
 <script>
 export default {
-    /**
-     * TODO
-     * Hacer que se conserven los datos al ingresar a la pantalla de settings
-     */
+
+    emits:['settingsApplied'],
     data(){
         return{
             info:{
@@ -118,6 +116,7 @@ export default {
 
             const routeConfig = {path: '/', query: arryToObj};
             this.updateRoute(routeConfig);
+            this.$emit('settingsApplied');
         },
         resetValues(){
             this.info.valueMinutes = 25;
@@ -137,6 +136,8 @@ export default {
 <style>
 .buttons{
     display:flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
 }
 </style>

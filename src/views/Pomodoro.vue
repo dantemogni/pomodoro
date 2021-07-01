@@ -8,17 +8,24 @@
   <!-- POMODORO -->
   <transition
       appear
-      enter-active-class="animate__animated animate__bounceInDown"
-      leave-active-class="animate__animated animate__bounceOutDown"
+      enter-active-class="animate__animated animate__faster animate__fadeInDown"
+      leave-active-class="animate__animated animate__faster animate__fadeOutUp"
       mode="out-in">
-      <keep-alive>
-        <section v-if="this.view==='Pomodoro'" class="pomodoroContent">
+    <keep-alive>
+        <section v-if="this.view==='Pomodoro'" 
+          class="main shadow pomodoroContent"
+          :class="{break: isTimerOnBreak}">
           <!-- START/PAUSE/RESUME BUTTONS -->
           <ControlButtons 
             :isPaused="isTimerPaused"
             :isStarted="isTimerStarted" 
             @start="clickStart" 
             @pause="togglePause"/>
+
+          <MessageTimer 
+            :isPaused="isTimerPaused"
+            :isStarted="isTimerStarted"
+            :isBreak="isTimerOnBreak"/>
 
           <!-- POMODORO TIMER -->
           <Timer 
@@ -38,30 +45,39 @@
             :isPaused="isTimerPaused"/>
 
           <!-- BREAK BUTTONS -->
-          <ForceBreakButtons
-            :isStarted="isTimerStarted"
-            @short="clickBreak"
-            @long="clickLongBreak"/>
-          
-          <AddMinutesButton :isStarted="isTimerStarted" @click="clickAdd"> Add 3' </AddMinutesButton>
-          <ResetButton :disabled="!this.isTimerStarted" @click="clickReset"> Reset </ResetButton>
-        </section>
-        <Settings v-else-if="this.view==='Settings'"></Settings>
-    </keep-alive>
-  </transition>
+          <!-- <div class="buttons-pomodoro"> -->
+            <ForceBreakButtons
+              :isStarted="isTimerStarted"
+              @short="clickBreak"
+              @long="clickLongBreak"/>
+            
+            <AddMinutesButton :isStarted="isTimerStarted" @click="clickAdd"> Add 3' </AddMinutesButton>
+          <!-- </div> -->
 
-  <SettingsButton v-if="this.view==='Pomodoro'" @toggle="toggleViews"><i class="fas fa-cog"></i></SettingsButton>
+          <ResetButton :disabled="!isTimerStarted" @click="clickReset"> Reset </ResetButton>
+        </section>
+          <Settings v-else-if="this.view==='Settings'" @settingsApplied="toggleViews"></Settings>
+        </keep-alive>
+  </transition>
+  
+    <transition
+      appear
+      enter-active-class="animate__animated animate__faster animate__fadeInDown"
+      leave-active-class="animate__animated animate__faster animate__fadeOutUp"
+      mode="out-in">
+  <SettingsButton :disabled="isTimerStarted" v-if="this.view==='Pomodoro'" @toggle="toggleViews">Settings</SettingsButton>
   <button 
     v-else-if="this.view==='Settings'"
     @click="toggleViews"
     type="button" 
     class="settings-btn shadow item-main"><i class="fas fa-arrow-left"></i></button>
-
+    </transition>
 
 </template>
 
 <script>
 
+import MessageTimer from '@/components/Pomodoro-Main/MessageTimer.vue'
 import Timer from '@/components/Pomodoro-Main/Timer.vue'
 import DotSessions from '@/components/Pomodoro-Main/DotsSessions.vue'
 import ControlButtons from '@/components/Pomodoro-Main/ControlButtons.vue'
@@ -74,6 +90,7 @@ import SettingsButton from "@/components/Pomodoro-Main/SettingsButton.vue"
 export default {
   name: 'Pomodoro',
   components: {
+    MessageTimer,
     Timer,
     DotSessions,
     ControlButtons,
@@ -136,7 +153,7 @@ export default {
     }
   },
   methods:{
-        toggleViews(){
+    toggleViews(){
       this.view==='Pomodoro' ? this.view='Settings' : this.view='Pomodoro'
     },
     changeType(value){
