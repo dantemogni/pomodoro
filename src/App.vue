@@ -81,7 +81,7 @@ export default {
 }
 .top-buttons{
   flex: 1 1 100%;
-  margin-top: -20%;
+  margin-top: -70px;
 }
 .btn-settings{
   flex: 1 1 100%;
