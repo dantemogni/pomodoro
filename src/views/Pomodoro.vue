@@ -45,7 +45,8 @@
             :finishedSessions="getUpdatedSessions"
             :isPaused="isTimerPaused"/>
 
-            <ProgressBar 
+            <ProgressBar
+              :isBreak="isTimerOnBreak"
               :progress="getProgress"/>
 
           <!-- BREAK BUTTONS -->

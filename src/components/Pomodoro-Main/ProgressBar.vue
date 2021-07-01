@@ -1,6 +1,8 @@
 <template>
-    <div class="progress" style="width: 100%;height:10px">
-        <div class="progress-bar" role="progressbar" :style="{width: getProg+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="progress" style="width: 100%">
+        <div class="progress-bar" role="progressbar" :style="{width: getProg+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            <span>{{progressMsg}}</span>
+        </div>
     </div>
 </template>
 
@@ -13,12 +15,36 @@ export default ({
             type: Number,
             default: 0,
         },
+        isBreak:{
+            type: Boolean,
+            default: false,
+        }
     },
     computed:{
         getProg(){
             return this.progress;
+        },
+        getBreak(){
+            return this.isBreak;
+        },
+        progressMsg(){
+            if(!this.getBreak){
+                if(this.getProg>40&&this.getProg<60){
+                    return 'Halfway ;)'
+                } else if(this.getProg>75&&this.getProg<95){
+                    return 'Almost there! Keep it up!'
+                } else if(this.getProg>=95){
+                    return 'You did it!'
+                }
+            } else{
+                if(this.getProg>75){
+                    return 'Break is almost over!'
+                }
+            }
+            return ''
         }
-    }
+    },
+
 })
 </script>
 <style>
