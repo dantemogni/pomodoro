@@ -3,7 +3,6 @@
   <audio id="audioStart"><source src="@/assets/start.mp3" type="audio/mpeg"></audio>
   <audio id="audioPause"><source src="@/assets/pause.mp3" type="audio/mpeg"></audio>
   <audio id="audioReset"><source src="@/assets/reset.mp3" type="audio/mpeg"></audio>
-  <!--<audio id="audioNoti"><source src="@/assets/notificationBell.wav" type="audio/wav"></audio>-->
 
   <!-- POMODORO -->
   <transition
@@ -45,14 +44,12 @@
             :isPaused="isTimerPaused"/>
 
           <!-- BREAK BUTTONS -->
-          <!-- <div class="buttons-pomodoro"> -->
-            <ForceBreakButtons
-              :isStarted="isTimerStarted"
-              @short="clickBreak"
-              @long="clickLongBreak"/>
+          <ForceBreakButtons
+            :isStarted="isTimerStarted"
+            @short="clickBreak"
+            @long="clickLongBreak"/>
             
-            <AddMinutesButton :isStarted="isTimerStarted" @click="clickAdd"> Add 3' </AddMinutesButton>
-          <!-- </div> -->
+          <AddMinutesButton :isStarted="isTimerStarted" @click="clickAdd"> Add 3' </AddMinutesButton>
 
           <ResetButton :disabled="!isTimerStarted" @click="clickReset"> Reset </ResetButton>
         </section>
@@ -60,17 +57,19 @@
         </keep-alive>
   </transition>
   
-    <transition
-      appear
-      enter-active-class="animate__animated animate__faster animate__fadeInDown"
-      leave-active-class="animate__animated animate__faster animate__fadeOutUp"
-      mode="out-in">
-  <SettingsButton :disabled="isTimerStarted" v-if="this.view==='Pomodoro'" @toggle="toggleViews">Settings</SettingsButton>
-  <button 
-    v-else-if="this.view==='Settings'"
-    @click="toggleViews"
-    type="button" 
-    class="settings-btn shadow item-main"><i class="fas fa-arrow-left"></i></button>
+  <transition
+    appear
+    enter-active-class="animate__animated animate__faster animate__fadeInDown"
+    leave-active-class="animate__animated animate__faster animate__fadeOutUp"
+    mode="out-in">
+
+    <SettingsButton :disabled="isTimerStarted" v-if="this.view==='Pomodoro'" @toggle="toggleViews">Settings</SettingsButton>
+    <button 
+      v-else-if="this.view==='Settings'"
+      @click="toggleViews"
+      type="button" 
+      class="settings-btn shadow item-main"><i class="fas fa-arrow-left"></i></button>
+
     </transition>
 
 </template>
