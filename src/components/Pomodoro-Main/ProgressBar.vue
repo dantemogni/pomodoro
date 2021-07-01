@@ -1,6 +1,6 @@
 <template>
     <div class="progress" style="width: 100%">
-        <div class="progress-bar" role="progressbar" :style="{width: getProg+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar progress-bar-striped" :class="{'progress-bar-animated': !getPaused}" role="progressbar" :style="{width: getProg+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
             <span>{{progressMsg}}</span>
         </div>
     </div>
@@ -18,7 +18,11 @@ export default ({
         isBreak:{
             type: Boolean,
             default: false,
-        }
+        },
+        isPaused:{
+            type: Boolean,
+            default: false,
+        },
     },
     computed:{
         getProg(){
@@ -26,6 +30,9 @@ export default ({
         },
         getBreak(){
             return this.isBreak;
+        },
+        getPaused(){
+            return this.isPaused;
         },
         progressMsg(){
             if(!this.getBreak){

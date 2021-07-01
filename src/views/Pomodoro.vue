@@ -46,6 +46,7 @@
             :isPaused="isTimerPaused"/>
 
             <ProgressBar
+              :isPaused="isTimerPaused"
               :isBreak="isTimerOnBreak"
               :progress="getProgress"/>
 
