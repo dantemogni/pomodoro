@@ -23,13 +23,12 @@ export default ({
         getMsg(){
             if (this.$props.isPaused){
                 return 'TIMER PAUSED';
-            } else if (!this.$props.isStarted){
-                return 'POMODORO TIMER';
-            } else if (!this.$props.isPaused && !this.$props.isBreak){
+            }  else if (!this.$props.isPaused && !this.$props.isBreak && this.$props.isStarted){
                 return 'TIMER RUNNING'
             } else if(this.$props.isBreak && !this.$props.isPaused){
                 return 'ENJOY YOUR BREAK :)'
-            }
+            } 
+            return 'POMODORO TIMER'
         }
     }
 })
