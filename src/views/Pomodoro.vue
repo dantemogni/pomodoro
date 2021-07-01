@@ -35,13 +35,18 @@
             :addMin="getAddedMinutes"
             :isReset="!isTimerStarted"
             :sessionsComplete="getUpdatedSessions"
-            @triggerNewType="changeType"/>
+            @triggerNewType="changeType"
+            @updateProgressBar="calculateProgress"/>
+
 
           <!-- SESSIONS INDICATOR -->
           <DotSessions 
             :sessions="getSessions"
             :finishedSessions="getUpdatedSessions"
             :isPaused="isTimerPaused"/>
+
+            <ProgressBar 
+              :progress="getProgress"/>
 
           <!-- BREAK BUTTONS -->
           <ForceBreakButtons
@@ -64,6 +69,7 @@
     mode="out-in">
 
     <SettingsButton :disabled="isTimerStarted" v-if="this.view==='Pomodoro'" @toggle="toggleViews">Settings</SettingsButton>
+    
     <button 
       v-else-if="this.view==='Settings'"
       @click="toggleViews"
@@ -85,6 +91,7 @@ import AddMinutesButton from '@/components/Pomodoro-Main/AddMinutesButton.vue'
 import ResetButton from "@/components/Pomodoro-Main/ResetButton.vue"
 import Settings from '@/components/SettingsComponent.vue'
 import SettingsButton from "@/components/Pomodoro-Main/SettingsButton.vue"
+import ProgressBar from '@/components/Pomodoro-Main/ProgressBar.vue'
 
 export default {
   name: 'Pomodoro',
@@ -98,10 +105,11 @@ export default {
     Settings,
     SettingsButton,
     ResetButton,
+    ProgressBar,
   },
-  emits:['allThingsMounted'],
   data(){
     return{
+      progress:null,
       isPaused: false,
       addedMinutes: 0,
       isBreak: false,
@@ -149,6 +157,9 @@ export default {
     },
     getUpdatedSessions(){
       return this.finishedCycles;
+    },
+    getProgress(){
+      return this.progress;
     }
   },
   methods:{
@@ -230,6 +241,9 @@ export default {
      */
     clickAdd(){
       this.addedMinutes++;
+    },
+    calculateProgress(time, currentTime){
+      this.progress = (((currentTime-time)*-1)*100)/time;
     },
   },
 }

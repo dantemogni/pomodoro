@@ -37,7 +37,7 @@ export default {
             default:0,
         }
     }, 
-    emits:['triggerNewType', 'newSession'],
+    emits:['triggerNewType', 'newSession', 'updateProgressBar'],
     data(){
         return{
             finishedCycles: 0,
@@ -149,8 +149,11 @@ export default {
             }
         },
         remaingTime(newValue){
+            /**
+             * When the remaingTime changes, it changes the title of DOM and updates the progress bar
+             */
             this.changeDocumentTitle();
-
+            this.$emit('updateProgressBar', this.$props.time*60, this.remaingTime);
             if(newValue===-1){
                 this.$emit('triggerNewType', this.isBreak);
             }
