@@ -115,6 +115,7 @@ export default {
       isBreak: false,
       finishedCycles:0,
       timer: null,
+      isNotificationGranted:false,
       view: "Pomodoro",
       info:{
         WORK: 25,
@@ -193,6 +194,12 @@ export default {
       this.finishedCycles++;
       this.isBreak = false;
       this.timer = this.info.WORK;
+      this.showNotification("Back to work");
+      Notification.requestPermission().then(permission => {
+         if(permission==='granted'){
+           this.isNotificationGranted=true;
+          }
+      });
     },
     /**
      * Handles short break
@@ -200,6 +207,7 @@ export default {
     clickBreak(){
       this.isBreak=true;
       this.timer = this.info.BREAK;
+      this.showNotification("Break has started. Enjoy :)");
     },
     /**
      * Handles long break
@@ -207,6 +215,7 @@ export default {
     clickLongBreak(){
       this.isBreak=true;
       this.timer = this.info.LONG_BREAK;
+      this.showNotification("Long break has started. Go outside, drink some water :)");
     },
     /**
      * Handles reset
@@ -244,6 +253,11 @@ export default {
     },
     calculateProgress(time, currentTime){
       this.progress = (((currentTime-time)*-1)*100)/time;
+    },
+    showNotification(msg){
+      if(this.isNotificationGranted){
+        new Notification("Pomodoro Timer", {body: msg,})
+      }
     },
   },
 }
