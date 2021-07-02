@@ -10,6 +10,7 @@
       enter-active-class="animate__animated animate__faster animate__fadeInDown"
       leave-active-class="animate__animated animate__faster animate__fadeOutUp"
       mode="out-in">
+      <keep-alive>
         <section v-if="this.view==='Pomodoro'" 
           class="main shadow pomodoroContent"
           :class="{break: isTimerOnBreak}">
@@ -61,6 +62,7 @@
           <ResetButton :disabled="!isTimerStarted" @click="clickReset"> Reset </ResetButton>
         </section>
           <Settings v-else-if="this.view==='Settings'" @settingsApplied="toggleViews"></Settings>
+          </keep-alive>
   </transition>
   
   <transition
@@ -128,8 +130,8 @@ export default {
   computed:{
     getPomodoroTime(){
       /**
-       * Returns time value stored in types.js file 
-       * acording to the route
+       * Returns time value.
+       * First fetches it from the URL, if there's no query, returns default value stored in 'info' object 
        */
       switch(this.timer){
         case this.info.WORK:
