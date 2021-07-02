@@ -3,7 +3,7 @@
     <router-view></router-view>
   </section>
 
-  <button data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" @click="this.toggleTheme" class="theme-toggle" :class="{'dark-mode': this.theme}"><i class="fa" :class="{'fa-sun': this.theme, 'fa-moon': !this.theme}"></i></button>
+  <button title="Switch theme" @click="this.toggleTheme" class="theme-toggle" :class="{'dark-mode': this.theme}"><i class="fa" :class="{'fa-sun': this.theme, 'fa-moon': !this.theme}"></i></button>
   <Footer />
 </template>
 
@@ -21,28 +21,35 @@ export default {
     }
   },
   mounted(){
-    this.theme=this.getTheme;
+    this.theme=this.getTheme
     this.toggleBodyClass(this.theme)
   },
   computed:{
     getTheme(){
-        return (window.matchMedia('(prefers-color-scheme: dark)').matches) ? true : false;
+      /**
+       * Returns true if dark mode is activated. 
+       * Also checks if the user has already made a choice 
+       */
+      return (localStorage.getItem('dark-mode') === null) 
+        ? (window.matchMedia('(prefers-color-scheme: dark)').matches) 
+        : (localStorage.getItem('dark-mode') === 'true');
     },
   },  
   methods:{
     toggleTheme(){
-      
+      /**
+       * Toggles between light/dark mode and saves the info in localStorage
+       */
       this.theme = !this.theme
+      localStorage.setItem('dark-mode', this.theme);
       this.toggleBodyClass(this.theme)
     },
     toggleBodyClass(theme) {
+      /**
+       * Add/remove 'dark-mode' class to the body tag
+       */
       const el = document.body;
-
-      if (theme) {
-        el.classList.add('dark-mode');
-      } else {
-        el.classList.remove('dark-mode');
-      }
+      (theme) ? el.classList.add('dark-mode') : el.classList.remove('dark-mode');
     },
   },
 }
