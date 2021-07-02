@@ -1,6 +1,6 @@
 <template>
     <div class="footer fixed-bottom d-flex flex-row justify-content-center align-items-center">
-        <span>Diseñado con 💙 por <a :href="this.authorLink" :alt="this.alt">{{this.author}}</a>.</span>
+        <span>Made with 💙 by <a :href="this.authorLink" :alt="this.alt">{{this.author}}</a>.</span>
     </div>
 </template>
 
