@@ -63,7 +63,11 @@ export default {
     },
     methods:{
         setTime(value){
+            if(value<0){
+                this.remaingTime= value*-1*60;
+            } else{
             this.remaingTime = value * 60;
+            }
         },
         handleStart(){
             this.finishedCycles++;
@@ -161,8 +165,12 @@ export default {
             /**
              * When the remaingTime changes, it changes the title of DOM and updates the progress bar
              */
+            var timeFull = this.time;
             this.changeDocumentTitle();
-            this.$emit('updateProgressBar', this.$props.time*60, this.remaingTime);
+            if(this.$props.time<0){
+                timeFull = timeFull*-1;
+            }
+            this.$emit('updateProgressBar', timeFull*60, this.remaingTime);
             if(newValue===-1){
                 this.$emit('triggerNewType', this.isBreak);
             }

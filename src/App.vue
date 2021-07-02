@@ -283,4 +283,7 @@ transition: all 0.5s ease-in;
     background-color: rgb(189, 255, 249) !important;
     transition: all 0.5s ease-in;
 }
+.dark-mode .break{
+  background-color: rgb(33, 124, 117) !important;
+}
 </style>
