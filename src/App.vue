@@ -135,6 +135,10 @@ export default {
   .dark-mode .form-range::-webkit-slider-thumb,.dark-mode .form-range::-moz-range-thumb {
     background-color: var(--bs-blue);
   } 
+  .dark-mode .break{
+    background-color: rgb(12, 162, 170) !important;
+    color: #242424;
+  }
 
 .slide-enter-active,
 .slide-leave-active {
@@ -280,10 +284,8 @@ transition: all 0.5s ease-in;
     }
 }
 .break{
-    background-color: rgb(189, 255, 249) !important;
+    background-color: rgb(189, 251, 255) !important;
     transition: all 0.5s ease-in;
 }
-.dark-mode .break{
-  background-color: rgb(33, 124, 117) !important;
-}
+
 </style>
