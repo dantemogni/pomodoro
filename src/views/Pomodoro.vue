@@ -133,11 +133,11 @@ export default {
        */
       switch(this.timer){
         case this.info.WORK:
-          return (this.$route.query.min === undefined) ? 0.1 : parseInt(this.$route.query.min);
+          return (this.$route.query.min === undefined) ? this.info.WORK : parseInt(this.$route.query.min);
         case this.info.BREAK:
-          return (this.$route.query.sbr === undefined) ? 1 : parseInt(this.$route.query.sbr);
+          return (this.$route.query.sbr === undefined) ? this.info.BREAK : parseInt(this.$route.query.sbr);
         case this.info.LONG_BREAK:
-          return (this.$route.query.lbr === undefined) ? 0.1 : parseInt(this.$route.query.lbr);
+          return (this.$route.query.lbr === undefined) ? this.info.LONG_BREAK : parseInt(this.$route.query.lbr);
         default:
           return (this.$route.query.min === undefined) ? this.info.WORK : parseInt(this.$route.query.min);
       }
