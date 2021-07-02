@@ -13,6 +13,7 @@
         <section v-if="this.view==='Pomodoro'" 
           class="main shadow pomodoroContent"
           :class="{break: isTimerOnBreak}">
+
           <!-- START/PAUSE/RESUME BUTTONS -->
           <ControlButtons 
             :isPaused="isTimerPaused"
@@ -132,13 +133,13 @@ export default {
        */
       switch(this.timer){
         case this.info.WORK:
-          return (typeof this.$route.query.min === 'undefined') ? this.info.WORK : parseInt(this.$route.query.min);
+          return (this.$route.query.min === undefined) ? 0.1 : parseInt(this.$route.query.min);
         case this.info.BREAK:
-         return (typeof this.$route.query.sbr === 'undefined') ? this.info.BREAK : parseInt(this.$route.query.sbr);
+          return (this.$route.query.sbr === undefined) ? 1 : parseInt(this.$route.query.sbr);
         case this.info.LONG_BREAK:
-          return (typeof this.$route.query.lbr === 'undefined') ? this.info.LONG_BREAK : parseInt(this.$route.query.lbr);
+          return (this.$route.query.lbr === undefined) ? 0.1 : parseInt(this.$route.query.lbr);
         default:
-          return (typeof this.$route.query.min === 'undefined') ? this.info.WORK : parseInt(this.$route.query.min);
+          return (this.$route.query.min === undefined) ? this.info.WORK : parseInt(this.$route.query.min);
       }
     },
     isTimerStarted(){
@@ -151,7 +152,7 @@ export default {
       return this.isBreak;
     },
     getSessions(){
-      return (typeof this.$route.query.ses === 'undefined') ? 4 : parseInt(this.$route.query.ses);
+      return (this.$route.query.ses === undefined) ? 4 : parseInt(this.$route.query.ses);
     },
     getAddedMinutes(){
       return this.addedMinutes;
@@ -227,6 +228,7 @@ export default {
 
       this.isBreak=false;
       this.finishedCycles=0;
+      this.isPaused=false;
       this.timer=null;
     },
     /**

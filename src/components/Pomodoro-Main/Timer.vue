@@ -46,7 +46,7 @@ export default {
         }
     },
     mounted() {
-        this.setTime(this.$props.time);
+        this.setTime(this.time);
     },
     computed:{
         minutes: function(){
@@ -125,7 +125,7 @@ export default {
         time(newTime){
             /**
              * Watches if the time has changed (if it changed from work to break)
-             */            
+             */
             this.setTime(newTime);
         },
         isPaused(){
@@ -146,6 +146,15 @@ export default {
              if(newValue){
                 this.stopCountdown()
                 this.handleStart();
+            }
+        },
+        isBreak(newValue){
+            /**
+             * This triggers new value of timer even if the work session has the same minutes of the break session.
+             * Without this, Timer won't know that the session has changed cause it won't detect a change in the timer, leading to bugs.
+             */
+            if(newValue){
+                this.setTime(this.time)
             }
         },
         remaingTime(newValue){
