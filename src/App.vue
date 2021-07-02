@@ -27,8 +27,9 @@ export default {
   computed:{
     getTheme(){
       /**
-       * Returns true if dark mode is activated. 
-       * Also checks if the user has already made a choice 
+       * Returns true if dark mode is activated.
+       * By default, it follows the OS theme. 
+       * Returns user choice if they made one before
        */
       return (localStorage.getItem('dark-mode') === null) 
         ? (window.matchMedia('(prefers-color-scheme: dark)').matches) 
