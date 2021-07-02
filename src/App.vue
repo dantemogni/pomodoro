@@ -1,8 +1,10 @@
 <template>
-  <section class="main">
+  <section class="main" :class="{'dark-mode': this.theme==='dark'}">
     <router-view></router-view>
   </section>
-  <Footer/>
+
+  <button data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" @click="this.toggleTheme" class="theme-toggle" :class="{'dark-mode': this.theme}"><i class="fa" :class="{'fa-sun': this.theme, 'fa-moon': !this.theme}"></i></button>
+  <Footer />
 </template>
 
 <script>
@@ -12,6 +14,36 @@ export default {
   name: 'App',
   components: {
     Footer,
+  },
+  data(){
+    return{
+      theme: null
+    }
+  },
+  mounted(){
+    this.theme=this.getTheme;
+    this.toggleBodyClass(this.theme)
+  },
+  computed:{
+    getTheme(){
+        return (window.matchMedia('(prefers-color-scheme: dark)').matches) ? true : false;
+    },
+  },  
+  methods:{
+    toggleTheme(){
+      
+      this.theme = !this.theme
+      this.toggleBodyClass(this.theme)
+    },
+    toggleBodyClass(theme) {
+      const el = document.body;
+
+      if (theme) {
+        el.classList.add('dark-mode');
+      } else {
+        el.classList.remove('dark-mode');
+      }
+    },
   },
 }
 
@@ -25,12 +57,77 @@ export default {
     // We execute the same script as before
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-  }
-  
-);
+  });
+
 </script>
 
 <style>
+:root{
+  --bs-main: white;
+  --border-main:#e0e0e0;
+  --bs-body: white;
+  --tx-color: #2c3e50
+}
+.dark-mode {
+  --bs-blue: #0d479e;
+  --bs-yellow: #b68902;
+  --bs-green: #115535;
+  --bs-main: #1b2631;
+  --tx-color: #979797;
+  --bs-body: #121212;
+  --bs-danger: #81222c;
+  --bs-gray: #3e4953;
+  --bs-secondary: #3e4953;
+  --border-main:#18242e;
+}
+  body {
+    background: var(--bs-body);
+      transition: all 0.3s ease-out;
+  }
+  .dark-mode .btn-outline-secondary:hover{
+    background-color: #3e4953 !important;
+    border-color: #45515b !important;
+    color: rgb(173, 173, 173);
+  }
+  .dark-mode .btn-outline-primary:hover{
+    border-color: #09326e;
+    color:white;
+    background-color: var(--bs-primary)
+  }
+  .dark-mode .btn-outline-primary{
+    border-color: #0e52b9;
+    color: #0e52b9
+  }
+  .dark-mode .btn-outline-secondary:hover, .dark-mode .btn-secondary{
+    background-color: var(--bs-secondary);
+    color: var(--tx-color)
+  }
+  .dark-mode .btn-danger{
+    background-color: var(--bs-danger);
+  }
+  .dark-mode .dot{
+    background-color: rgba(255, 255, 255, 0.247);
+  }
+  .dark-mode .settings-btn {
+    background-color: var(--bs-pink);
+  }
+  .dark-mode .theme-toggle {
+    background-color: var(--bs-yellow);
+  }
+  .dark-mode .btn-settings:hover{
+    background-color:var(--bs-main) !important;
+    border-color: var(--border-main) !important;  
+  }
+  a {
+    color: #809fff;
+  }
+  .dark-mode .form-range::-moz-range-track, .dark-mode .form-range::-webkit-slider-runnable-track {
+  background-color: rgba(222, 226, 230, 0.247) !important;
+  }
+  .dark-mode .form-range::-webkit-slider-thumb,.dark-mode .form-range::-moz-range-thumb {
+    background-color: var(--bs-blue);
+  } 
+
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.3s ease-out;
@@ -53,7 +150,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var(--tx-color);
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8,1fr);
@@ -76,8 +173,8 @@ export default {
 .pomodoroContent{
     border-radius: 15px;
     padding: 30px;
-    border: 1px solid #e0e0e0;
-    background-color: #fff;
+    border: 1px solid var(--border-main);
+    background-color: var(--bs-main);
 }
 .top-buttons{
   flex: 1 1 100%;
@@ -109,21 +206,26 @@ export default {
       transform:scale(1)
     }
 }
-.settings-btn{
+.settings-btn, .theme-toggle{
   text-align: center;
   color:white;
   border: none;
   border-radius: 50%;
-  background-color:#6c757d !important;
+  background-color: var(--bs-gray);
   width:55px;
   font-size: 1em;
   height:55px;
   margin-top: 10px;
 }
+.theme-toggle {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+}
 .main-btn{
   text-align: center;
   color:white;
-  background-color:#0d6efd!important;
+  background-color: var(--bs-blue);
   border: none;
   border-radius: 50%;
   width:75px;
@@ -131,12 +233,12 @@ export default {
   height:75px;
 }
 .pause-btn{
-    background-color:#ffc107!important;
+    background-color: var(--bs-yellow);
     animation: scale 0.5s;
 
 }
 .resume-btn{
-    background-color:#198754!important;
+    background-color:var(--bs-green);
     transition: all 0.3s linear;
 }
 #dotsCycle{
@@ -145,7 +247,7 @@ export default {
 .dot {
   height: 10px;
   width: 10px;
-  background-color: rgb(175, 175, 175);
+  background-color: rgba(160, 160, 160, 0.678);
   border-radius: 50%;
   margin: 5px;
 transition: all 0.5s ease-in;

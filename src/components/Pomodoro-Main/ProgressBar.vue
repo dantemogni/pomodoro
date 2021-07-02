@@ -55,4 +55,7 @@ export default ({
 })
 </script>
 <style>
+.progress{
+    background-color: rgba(0, 0, 0, 0.15)
+}
 </style>
