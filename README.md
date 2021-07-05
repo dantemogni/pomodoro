@@ -1,12 +1,8 @@
-<p align="center">
-<a href="https://app.netlify.com/sites/pomodoro-dante/deploys">
-<img src="https://api.netlify.com/api/v1/badges/785eb050-2706-4889-9331-8f7156ed4062/deploy-status">
-</a>
-</p>
+[![Netlify Status](https://api.netlify.com/api/v1/badges/785eb050-2706-4889-9331-8f7156ed4062/deploy-status)](https://app.netlify.com/sites/pomodoro-dante/deploys)
 
-<p align="center"><h1>Pomodoro Web App ⏳🙇‍♂️</h1><i>Simple yet useful pomodoro timer.</i></p>
+# Pomodoro Web App ⏳🙇‍♂️
+_Simple yet useful pomodoro timer._
 
----
 
 ![Dark/Light theme support](./docs/web-theme.gif)
 
