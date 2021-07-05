@@ -4,7 +4,7 @@
 </a>
 </p>
 
-<center><h1>Pomodoro Web App ⏳🙇‍♂️</h1><i>Simple yet useful pomodoro timer.</i></center>
+<p align="center"><h1>Pomodoro Web App ⏳🙇‍♂️</h1><i>Simple yet useful pomodoro timer.</i></p>
 
 ---
 
