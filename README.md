@@ -4,8 +4,12 @@
 </a>
 </p>
 
+<center>
+
 # Pomodoro Web App ⏳🙇‍♂️
  _Simple yet useful pomodoro timer._
+
+</center>
 
 ---
 
